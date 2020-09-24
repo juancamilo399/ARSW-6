@@ -2,7 +2,8 @@ var Module = (function () {
 
 
 
-	var url = 'js/apimock.js';
+	var url = 'js/apiclient.js';
+	var cinemaFunction = {name:null,seats:[],date:null}
 
 	function _map(list){
 		return mapList = list.map(function(cinemaFunction){
@@ -15,12 +16,15 @@ var Module = (function () {
 	}
 
 	function _table(cinemaFunctions){
+		console.log(cinemaFunctions);
 		functions = _map(cinemaFunctions);
 		$("#table_cinema > tbody").empty();
 		functions.map(function(f){
 			var onclick = "Module.getAvailability(\""+f.name+"\")";
 			var stri="'"+onclick+"'";
 			var boton = "<input type='button' class='btn btn-primary' value='Open Seats' onclick=" + stri + "></input>";
+			console.log("tabla");
+			console.log(f);
 			console.log(boton);
 			$("#table_cinema > tbody").append(
 				"<tr>" +
@@ -43,10 +47,13 @@ var Module = (function () {
 			api.getFunctionByNameAndDate(cine,date,movieName,drawCanvas);
 		});
 	}
-
+	function setCinemaFunction(cinema_function){
+		cinemaFunction = cinema_function;
+	}
 
 	function drawCanvas(data) {
 		clearCanvas();
+		setCinemaFunction(data);
 		var asientos = data.seats;
 		var c = document.getElementById("canvasId");
 		var ctx = c.getContext("2d");
@@ -76,17 +83,29 @@ var Module = (function () {
 	}
 
 
-	function getFunctionsByCinemaAndDate(){
+	function updateFunction(){
 		cinemaName = $("#name_input").val();
 		cinemaDate = $("#date_input").val();
-		$("#cinema_name").text("Cinema name : "+ cinemaName);
-		$.getScript(url,function(){
-			api.getFunctionsByCinemaAndDate(cinemaName,cinemaDate,_table);
+		newDate = $("#new_date").val();
+		console.log(cinemaFunction);
+		cinemaFunction.date = newDate;
+		console.log(cinemaFunction);
+		api.updateFunction(cinemaName, cinemaFunction).then(function() {
+			getFunctionsByCinemaAndDate(newDate);
 		});
+	}
+
+	function getFunctionsByCinemaAndDate(date){
+		cinemaName = $("#name_input").val();
+		cinemaDate = date
+		$("#cinema_name").text("Cinema name : "+ cinemaName);
+		console.log("get app");
+		api.getFunctionsByCinemaAndDate(cinemaName,cinemaDate,_table);
 	}
 
 	return {
 		getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
-		getAvailability: getAvailability
+		getAvailability: getAvailability,
+		updateFunction : updateFunction
 	};
 })();

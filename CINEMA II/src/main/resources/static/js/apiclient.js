@@ -1,11 +1,12 @@
-var apiclient = function () {
+api = (function () {
     function getFunctionsByCinema(cinemaName, callback) {
         $.getJSON("http://localhost:8080/cinemas/" + cinemaName, function (data) {
             callback(data);
         });
     }
-    function getFunctionByCinemaAndDate(cinemaName, date, callback) {
-        $.getJSON("http://localhost:8080/cinemas/" + date + "/" + cinemaName, function (data) {
+    function getFunctionsByCinemaAndDate(cinema_name, fdate, callback) {
+        console.log("get client");
+        $.getJSON("http://localhost:8080/cinemas/" + cinema_name + "/" + fdate, function (data) {
             callback(data);
         });
     }
@@ -15,9 +16,21 @@ var apiclient = function () {
             callback(data);
         });
     }
+
+    function updateFunction(cinemaName,cinemaFunction){
+        var data = $.ajax({
+            url: "http://localhost:8080/cinemas/"+cinemaName,
+            type: 'PUT',
+            data: JSON.stringify(cinemaFunction),
+            contentType: "application/json"
+        });
+        return data;
+    }
+
     return {
         getFunctionsByCinema: getFunctionsByCinema,
         getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
-        getFunctionByNameAndDate : getFunctionByNameAndDate
+        getFunctionByNameAndDate : getFunctionByNameAndDate,
+        updateFunction : updateFunction
     }
-}
+})();
