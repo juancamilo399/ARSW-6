@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:h="">
 <head>
     <meta charset="UTF-8">
     <title>CinemaApp</title>
@@ -78,21 +78,29 @@
 
                 <button type="button" onclick="Module.updateFunction()" class="btn btn-primary">Save/update</button>
             </form>
+            <p></p>
 
-            <br>
-            <button type="button"  class="btn btn-primary">Create new function</button>
-            <button type="button"  class="btn btn-primary">Delete function</button>
-
+            <form>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="new_function_hour">Function date</label>
+                        <input type="text" class="form-control" id="new_function_hour" placeholder="Function date">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="new_movie_name">Movie name</label>
+                        <input type="text" class="form-control" id="new_movie_name" placeholder="Movie name">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="new_genre">Genre</label>
+                        <input type="text" class="form-control" id="new_genre" placeholder="Genre">
+                    </div>
+                </div>
+            </form>
+            <button type="button" onclick="Module.updateFunction()" class="btn btn-primary">Delete Function</button>
+            <button type="button" onclick="Module.createFunction()" class="btn btn-primary">Create Function</button>
         </div>
 
-
-
     </div>
-
-
-
-
-
 
 </div>
 

@@ -3,7 +3,7 @@ var Module = (function () {
 
 
 	var url = 'js/apiclient.js';
-	var cinemaFunction = {name:null,seats:[],date:null}
+	var cinemaFunction = {movie:{name: null , genre: null},seats:[],date:null}
 
 	function _map(list){
 		return mapList = list.map(function(cinemaFunction){
@@ -87,12 +87,24 @@ var Module = (function () {
 		cinemaName = $("#name_input").val();
 		cinemaDate = $("#date_input").val();
 		newDate = $("#new_date").val();
-		console.log(cinemaFunction);
 		cinemaFunction.date = newDate;
-		console.log(cinemaFunction);
 		api.updateFunction(cinemaName, cinemaFunction).then(function() {
 			getFunctionsByCinemaAndDate(newDate);
 		});
+	}
+
+	function createFunction(){
+		cinemaName = $("#name_input").val();
+		cinemaDate = $("#date_input").val();
+		functionHour = $("#new_function_hour").val();
+		movieName = $("#new_movie_name").val();
+		genre = $("#new_genre").val();
+		cinemaFunction.date = functionHour;
+		cinemaFunction.movie.name = movieName;
+		cinemaFunction.movie.genre = genre;
+		api.updateFunction(cinemaName,cinemaFunction).then(function(){
+			getFunctionsByCinema();
+		})
 	}
 
 	function getFunctionsByCinemaAndDate(date){
@@ -103,9 +115,18 @@ var Module = (function () {
 		api.getFunctionsByCinemaAndDate(cinemaName,cinemaDate,_table);
 	}
 
+	function getFunctionsByCinema(){
+		cinemaName = $("#name_input").val();
+		$("#cinema_name").text("Cinema name : "+ cinemaName);
+		console.log("get app");
+		api.getFunctionsByCinema(cinemaName,_table);
+	}
+
 	return {
 		getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
 		getAvailability: getAvailability,
-		updateFunction : updateFunction
+		updateFunction : updateFunction,
+		getFunctionsByCinema , getFunctionsByCinema,
+		createFunction : createFunction
 	};
 })();
