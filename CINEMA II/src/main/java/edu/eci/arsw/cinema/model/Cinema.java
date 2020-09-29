@@ -54,6 +54,11 @@ public class Cinema {
     }
 
     public void replaceFunction(CinemaFunction function) {
+        deleteFunction(function);
+        functions.add(function);
+    }
+
+    public void deleteFunction(CinemaFunction function) {
         int index=0;
         Iterator<CinemaFunction> iterator = functions.iterator();
         while(iterator.hasNext()){
@@ -63,6 +68,5 @@ public class Cinema {
             }
         }
         functions.remove(index);
-        functions.add(function);
     }
 }

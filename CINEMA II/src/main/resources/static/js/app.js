@@ -16,16 +16,13 @@ var Module = (function () {
 	}
 
 	function _table(cinemaFunctions){
-		console.log(cinemaFunctions);
 		functions = _map(cinemaFunctions);
 		$("#table_cinema > tbody").empty();
 		functions.map(function(f){
-			var onclick = "Module.getAvailability(\""+f.name+"\")";
+			date = $("#date_input").val();
+			var onclick = "Module.getAvailability(\""+f.name+"\",\""+date+"\")";
 			var stri="'"+onclick+"'";
 			var boton = "<input type='button' class='btn btn-primary' value='Open Seats' onclick=" + stri + "></input>";
-			console.log("tabla");
-			console.log(f);
-			console.log(boton);
 			$("#table_cinema > tbody").append(
 				"<tr>" +
 					"<td>" + f.name + "</td>"+
@@ -38,10 +35,9 @@ var Module = (function () {
 		});
 	}
 
-	function getAvailability(movieName) {
-		console.log(movieName)
+	function getAvailability(movieName,date) {
 		cine = $("#name_input").val();
-		date = $("#date_input").val();
+		date = date
 		$("#movie_name").text("Availability of: "+movieName);
 		$.getScript(url,function(){
 			api.getFunctionByNameAndDate(cine,date,movieName,drawCanvas);
@@ -86,7 +82,8 @@ var Module = (function () {
 	function updateFunction(){
 		cinemaName = $("#name_input").val();
 		cinemaDate = $("#date_input").val();
-		newDate = $("#new_date").val();
+		newHour = $("#new_hour").val();
+		newDate = cinemaDate+" "+newHour;
 		cinemaFunction.date = newDate;
 		api.updateFunction(cinemaName, cinemaFunction).then(function() {
 			getFunctionsByCinemaAndDate(newDate);
@@ -97,36 +94,40 @@ var Module = (function () {
 		cinemaName = $("#name_input").val();
 		cinemaDate = $("#date_input").val();
 		functionHour = $("#new_function_hour").val();
+		console.log(functionHour);
+		newDate = $("#date_input").val()+" "+functionHour;
 		movieName = $("#new_movie_name").val();
 		genre = $("#new_genre").val();
-		cinemaFunction.date = functionHour;
+		cinemaFunction.date = newDate;
 		cinemaFunction.movie.name = movieName;
 		cinemaFunction.movie.genre = genre;
+		date = $("#date_input").val();
 		api.updateFunction(cinemaName,cinemaFunction).then(function(){
-			getFunctionsByCinema();
+			getFunctionsByCinemaAndDate(date);
 		})
+	}
+
+	function deleteFunction(){
+		cinemaName = $("#name_input").val();
+		cinemaDate = $("#date_input").val();
+		api.deleteFunction(cinemaName, cinemaFunction).then(function() {
+			clearCanvas();
+			getFunctionsByCinemaAndDate(cinemaDate);
+		});
 	}
 
 	function getFunctionsByCinemaAndDate(date){
 		cinemaName = $("#name_input").val();
-		cinemaDate = date
 		$("#cinema_name").text("Cinema name : "+ cinemaName);
-		console.log("get app");
-		api.getFunctionsByCinemaAndDate(cinemaName,cinemaDate,_table);
+		api.getFunctionsByCinemaAndDate(cinemaName,date,_table);
 	}
 
-	function getFunctionsByCinema(){
-		cinemaName = $("#name_input").val();
-		$("#cinema_name").text("Cinema name : "+ cinemaName);
-		console.log("get app");
-		api.getFunctionsByCinema(cinemaName,_table);
-	}
 
 	return {
 		getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
 		getAvailability: getAvailability,
 		updateFunction : updateFunction,
-		getFunctionsByCinema , getFunctionsByCinema,
-		createFunction : createFunction
+		createFunction : createFunction,
+		deleteFunction : deleteFunction
 	};
 })();

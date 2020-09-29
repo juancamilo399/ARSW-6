@@ -69,7 +69,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             throw new CinemaPersistenceException("El cinema no existe");
         }
         List<CinemaFunction> selected_functions=selectedCinema.getFunctions().stream()
-                .filter(f -> f.getDate().equals(date) && f.getMovie().getName().equals(movieName))
+                .filter(f -> f.getDate().contains(date) && f.getMovie().getName().equals(movieName))
                 .collect(Collectors.toList());
         selected_functions.get(0).buyTicket(row,col);
     }
@@ -84,11 +84,8 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             throw new CinemaPersistenceException("El cinema no existe");
         }
         List<CinemaFunction> selected_functions=selectedCinema.getFunctions().stream()
-                .filter(f -> f.getDate().equals(date))
+                .filter(f -> f.getDate().contains(date))
                 .collect(Collectors.toList());
-        if(selected_functions.size()==0){
-            throw new CinemaPersistenceException("Funciones no encontradas para ese cinema y esa fecha");
-        }
         return selected_functions;
     }
 
@@ -148,6 +145,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
                 throw new CinemaPersistenceException("La función ya existe en ese cinema");
             }
         }
+        function = new CinemaFunction(function.getMovie(),function.getDate());
         cinema.addFunction(function);
     }
 
@@ -165,6 +163,23 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         }
         if(!replaced){
             addFunctionToCinema(cinema,function);
+        }
+    }
+
+    @Override
+    public void deleteFunction(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
+        if(!cinemas.containsKey(cinema.getName())){
+            throw new CinemaPersistenceException("El cinema no existe");
+        }
+        boolean deleted = false;
+        for(CinemaFunction cFunction : cinema.getFunctions()){
+            if(cFunction.getMovie().getName().equals(function.getMovie().getName())){
+                cinema.deleteFunction(function);
+                deleted = true;
+            }
+        }
+        if(!deleted){
+            throw new CinemaPersistenceException("La pelicula no pertenece a ese cinema");
         }
     }
 }

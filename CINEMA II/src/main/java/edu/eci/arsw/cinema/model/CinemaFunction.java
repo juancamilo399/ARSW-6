@@ -74,4 +74,5 @@ public class CinemaFunction {
                 ", date='" + date + '\'' +
                 '}';
     }
+
 }

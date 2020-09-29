@@ -75,4 +75,8 @@ public class CinemaServices {
     public void modifieFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
         cps.modifieFunctionOfACinema(cinema,function);
     }
+
+    public void deleteFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
+        cps.deleteFunction(cinema,function);
+    }
 }

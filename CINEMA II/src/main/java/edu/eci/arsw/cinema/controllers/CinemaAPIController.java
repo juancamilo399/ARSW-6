@@ -138,4 +138,22 @@ public class CinemaAPIController {
             return new ResponseEntity<>("Existe un error en el formato del JSON de la funcion", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<?> DeleteFunction(@PathVariable String name, @RequestBody CinemaFunction function) {
+        try {
+            cs.deleteFunctionOfACinema(cs.getCinemaByName(name),function);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (CinemaPersistenceException ex) {
+            ResponseEntity response = null;
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            if (ex.getMessage().equals("El cinema no existe")) {
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            return response;
+        } catch (org.springframework.http.converter.HttpMessageNotReadableException hx){
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, hx);
+            return new ResponseEntity<>("Existe un error en el formato del JSON de la funcion", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

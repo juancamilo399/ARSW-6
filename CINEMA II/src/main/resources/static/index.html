@@ -30,7 +30,7 @@
                 <input type="text" class="form-control" id="name_input" placeholder="write the name"/>
 
                 <label for="date_input">Date</label>
-                <input type="text" class="form-control" id="date_input" placeholder="write the date"/>
+                <input type="date" id="date_input" name="date_input" placeholder="write the date"/>
 
                 <button type="button" onclick="Module.getFunctionsByCinemaAndDate(date_input.value)" class="btn btn-primary">Get Functions</button>
             </form>
@@ -69,22 +69,27 @@
         </div>
 
         <div class="col-md">
+
             <h2 id="movie_name"></h2>
+
             <canvas id="canvasId" width="500" height="400" style="border:1px solid #000000;"></canvas>
+            <button type="button" onclick="Module.deleteFunction()" class="btn btn-primary">Delete selected function</button>
+            <p></p>
 
             <form class="form-inline">
-                <label for="new_date">Cinema name</label>
-                <input type="text" class="form-control" id="new_date" placeholder="new date"/>
-
+                <label for="new_hour">Function hour</label>
+                <input type="text" name="new_hour" id="new_hour" maxlength=8 pattern="^((\d+:)?\d+:)?\d*$" placeholder="hh:mm " size=30>
                 <button type="button" onclick="Module.updateFunction()" class="btn btn-primary">Save/update</button>
+
             </form>
+            <p></p>
             <p></p>
 
             <form>
                 <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label for="new_function_hour">Function date</label>
-                        <input type="text" class="form-control" id="new_function_hour" placeholder="Function date">
+                    <div class="col-sm-3">
+                        <label for="new_function_hour">Function hour</label>
+                        <input type="text" name="new_function_hour" id="new_function_hour" maxlength=8 pattern="^((\d+:)?\d+:)?\d*$" placeholder="hh:mm " size=30>
                     </div>
                     <div class="col-sm-3">
                         <label for="new_movie_name">Movie name</label>
@@ -96,7 +101,6 @@
                     </div>
                 </div>
             </form>
-            <button type="button" onclick="Module.updateFunction()" class="btn btn-primary">Delete Function</button>
             <button type="button" onclick="Module.createFunction()" class="btn btn-primary">Create Function</button>
         </div>
 

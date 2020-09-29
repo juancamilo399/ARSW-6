@@ -80,4 +80,12 @@ public interface CinemaPersitence {
      * @param function to be modified or added
      */
     void modifieFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException;
+
+    /**
+     *
+     * @param cinema he cinema on that the function is going to be deleted
+     * @param function to be deleted
+     */
+    void deleteFunction(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException;
+
 }
